@@ -35,9 +35,12 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install "Flask>=2.0.0,<2.3" "Werkzeug<2.0.0"
-
-          
+          pip install -r requirements.txt
+      - name: Apply werkzeug patch
+        run: |
+          echo "from urllib.parse import quote as url_quote" >> werkzeug_patch.py
+          echo "import werkzeug.urls" >> werkzeug_patch.py
+          echo "werkzeug.urls.url_quote = url_quote" >> werkzeug_patch.py  
          
       - name: Test with pytest
         run: |
